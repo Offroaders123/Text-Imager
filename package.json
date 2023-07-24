@@ -1,0 +1,14 @@
+{
+  "name": "text-imager",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc; vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6",
+    "vite": "^4.4.6"
+  }
+}

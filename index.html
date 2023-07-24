@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+
+<title>TextImager</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: sans-serif;
+  }
+  textarea {
+    height: 10ch;
+  }
+  canvas {
+    height: 1ch;
+    display: block;
+    image-rendering: pixelated;
+  }
+</style>
+
+</head>
+
+<body>
+
+<textarea id="textInput" placeholder="Image content!">!</textarea>
+<canvas id="canvas"></canvas>
+
+<script type="module" src="./src/index.ts"></script>
+
+</body>
+
+</html>
