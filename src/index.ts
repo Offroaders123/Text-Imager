@@ -19,22 +19,27 @@ function drawImageContent(): void {
   const isSquared = isSquare(dataLength);
   console.log(isSquared);
 
-  const width = isSquared ? stringLength / 2 : stringLength - stringLength % RGBA_LENGTH;
-  const height = isSquared ? stringLength / 2 : 1;
+  const width = stringLength;
+  const height = 1;
 
   const data = new Uint8ClampedArray(dataLength);
   const dataView = new DataView(data.buffer);
   // console.log(data);
 
-  for (let i = 0; i < stringLength; i++){
-    if (i / RGBA_LENGTH % RGBA_LENGTH){
-      dataView.setUint8(i + 3,255);
+  let i = 0;
+  let outI = 0;
+  while (i < stringLength){
+    if (outI % RGBA_LENGTH === 3){
+      dataView.setUint8(outI,255);
+      outI++;
     }
 
     const char = value[i]!;
     console.log(i,char);
 
-    dataView.setUint8(i,char.charCodeAt(0));
+    dataView.setUint8(outI,char.charCodeAt(0));
+    i++;
+    outI++;
   }
   console.log(data);
 
