@@ -14,12 +14,15 @@ function drawImageContent(): void {
   const stringLength = value.length;
   console.log(stringLength);
 
-  const dataLength = stringLength * RGBA_LENGTH;
+  const upperClampLength = stringLength - stringLength % 3 + 3;
+  console.log(upperClampLength);
+
+  const dataLength = upperClampLength + upperClampLength / 3;
 
   const isSquared = isSquare(dataLength);
   console.log(isSquared);
 
-  const width = stringLength;
+  const width = dataLength / 4;
   const height = 1;
 
   const data = new Uint8ClampedArray(dataLength);
@@ -28,16 +31,16 @@ function drawImageContent(): void {
 
   let i = 0;
   let outI = 0;
-  while (i < stringLength){
+  while (i < upperClampLength){
     if (outI % RGBA_LENGTH === 3){
       dataView.setUint8(outI,255);
       outI++;
     }
 
-    const char = value[i]!;
-    console.log(i,char);
+    const char = value[i];
+    // console.log(i,char);
 
-    dataView.setUint8(outI,char.charCodeAt(0));
+    dataView.setUint8(outI,char?.charCodeAt(0) ?? 0);
     i++;
     outI++;
   }
