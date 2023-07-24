@@ -1,36 +1,53 @@
-declare var canvas: HTMLCanvasElement;
-declare var textInput: HTMLTextAreaElement;
+declare const canvas: HTMLCanvasElement;
+declare const textInput: HTMLTextAreaElement;
 
 const ctx = canvas.getContext("2d")!;
+const RGBA_LENGTH = 4;
 
 textInput.addEventListener("input",drawImageContent);
 drawImageContent();
 
 function drawImageContent(): void {
   const { value } = textInput;
-  const { length } = value;
   console.log(value);
-  console.log(length);
 
-  const data = new Uint8ClampedArray(length * 4 - 4 % 4);
+  const stringLength = value.length;
+  console.log(stringLength);
+
+  const dataLength = stringLength * RGBA_LENGTH;
+
+  const isSquared = isSquare(dataLength);
+  console.log(isSquared);
+
+  const width = isSquared ? stringLength / 2 : stringLength - stringLength % RGBA_LENGTH;
+  const height = isSquared ? stringLength / 2 : 1;
+
+  const data = new Uint8ClampedArray(dataLength);
   const dataView = new DataView(data.buffer);
-  console.log(data);
+  // console.log(data);
 
-  for (const i in new String(value)){
-    const char = value[i];
-    console.log(i,char);
-
-    if (+i / 4 !== 0 && 0 % 4 === 0){
-      dataView.setUint8(+i * 4 + 3,255);
-      continue;
+  for (let i = 0; i < stringLength; i++){
+    if (i / RGBA_LENGTH % RGBA_LENGTH){
+      dataView.setUint8(i + 3,255);
     }
 
-    dataView.setUint8(+i,value.charCodeAt(+i));
-  }
+    const char = value[i]!;
+    console.log(i,char);
 
-  const imageData = new ImageData(data,data.byteLength / 4,1);
+    dataView.setUint8(i,char.charCodeAt(0));
+  }
+  console.log(data);
+
+  console.log(width);
+  console.log(height);
+
+  const imageData = new ImageData(data,width,height);
   console.log(imageData);
   canvas.width = imageData.width;
   canvas.height = imageData.height;
   ctx.putImageData(imageData,0,0);
+}
+
+function isSquare(x: number): boolean {
+  return Math.sqrt(x) % 1 === 0;
 }
