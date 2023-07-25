@@ -9,18 +9,18 @@ drawImageContent();
 
 function drawImageContent(): void {
   const { value } = textInput;
-  console.log(value);
+  // console.log(value);
 
   const stringLength = value.length;
-  console.log(stringLength);
+  // console.log(stringLength);
 
-  const upperClampLength = stringLength - stringLength % 3 + 3;
-  console.log(upperClampLength);
+  const upperClampLength = Math.ceil(stringLength / RGBA_LENGTH) * RGBA_LENGTH;
+  // console.log(upperClampLength);
 
-  const dataLength = upperClampLength + upperClampLength / 3;
+  const dataLength = upperClampLength;
 
   const isSquared = isSquare(dataLength);
-  console.log(isSquared);
+  // console.log(isSquared);
 
   const width = dataLength / 4;
   const height = 1;
@@ -31,23 +31,18 @@ function drawImageContent(): void {
 
   let i = 0;
   let outI = 0;
-  while (i < upperClampLength){
-    if (outI % RGBA_LENGTH === 3){
-      dataView.setUint8(outI,255);
-      outI++;
-    }
-
+  while (outI < upperClampLength){
     const char = value[i];
-    // console.log(i,char);
-
-    dataView.setUint8(outI,char?.charCodeAt(0) ?? 0);
+    if (char === undefined) break;
+    const code = char.charCodeAt(0);
+    dataView.setUint8(outI,code);
     i++;
     outI++;
   }
   console.log(data);
 
-  console.log(width);
-  console.log(height);
+  // console.log(width);
+  // console.log(height);
 
   const imageData = new ImageData(data,width,height);
   console.log(imageData);
