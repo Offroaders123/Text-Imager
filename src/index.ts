@@ -3,6 +3,7 @@ declare const textInput: HTMLTextAreaElement;
 
 const ctx = canvas.getContext("2d")!;
 const RGBA_LENGTH = 4;
+const RGB_LENGTH = 3;
 
 textInput.addEventListener("input",drawImageContent);
 drawImageContent();
@@ -14,10 +15,10 @@ function drawImageContent(): void {
   const stringLength = value.length;
   // console.log(stringLength);
 
-  const upperClampLength = Math.ceil(stringLength / RGBA_LENGTH) * RGBA_LENGTH;
+  const upperClampLength = Math.ceil(stringLength / RGB_LENGTH) * RGB_LENGTH || RGB_LENGTH;
   // console.log(upperClampLength);
 
-  const dataLength = upperClampLength;
+  const dataLength = upperClampLength + upperClampLength / 3;
 
   const isSquared = isSquare(dataLength);
   // console.log(isSquared);
@@ -31,7 +32,10 @@ function drawImageContent(): void {
 
   let i = 0;
   let outI = 0;
-  while (outI < upperClampLength){
+  while (outI < dataLength){
+    if (Number.isInteger(i / RGBA_LENGTH)){
+      console.log(outI + 3);
+    }
     const char = value[i];
     if (char === undefined) break;
     const code = char.charCodeAt(0);
