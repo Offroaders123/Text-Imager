@@ -5,6 +5,8 @@ const ctx = canvas.getContext("2d")!;
 const RGBA_LENGTH = 4;
 const RGB_LENGTH = 3;
 
+const decoder = new TextDecoder();
+
 textInput.addEventListener("input",drawImageContent);
 drawImageContent();
 
@@ -31,17 +33,16 @@ function drawImageContent(): void {
   // console.log(data);
 
   let i = 0;
-  let outI = 0;
-  while (outI < dataLength){
-    if (Number.isInteger(i / RGBA_LENGTH)){
-      console.log(outI + 3);
+  for (const u in data){
+    if (+u % RGBA_LENGTH === 3){
+      dataView.setUint8(+u,255);
+      continue;
     }
     const char = value[i];
-    if (char === undefined) break;
-    const code = char.charCodeAt(0);
-    dataView.setUint8(outI,code);
+    const code = char?.charCodeAt(0);
+    // console.log(char);
+    if (code !== undefined) dataView.setUint8(+u,code);
     i++;
-    outI++;
   }
   console.log(data);
 
@@ -50,6 +51,7 @@ function drawImageContent(): void {
 
   const imageData = new ImageData(data,width,height);
   console.log(imageData);
+  console.log(decoder.decode(data));
   canvas.width = imageData.width;
   canvas.height = imageData.height;
   ctx.putImageData(imageData,0,0);
